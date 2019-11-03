@@ -7,6 +7,9 @@
 require "../config.php";
 require "../common.php";
 
+if (isset($_POST['submit'])) {
+  if (!hash_equals($_SESSION['csrf'], $_POST['csrf'])) die();
+
 try {
   $connection = new PDO($dsn, $username, $password, $options);
 
@@ -48,6 +51,7 @@ try {
             <td><?php echo escape($row["location"]); ?></td>
             <td><?php echo escape($row["date"]); ?> </td>
             <td><a href="update-single.php?id=<?php echo escape($row["id"]); ?>">Edit</a></td>
+            <input name="csrf" type="hidden" value="<?php echo escape($_SESSION['csrf']); ?>">
         </tr>
     <?php endforeach; ?>
     </tbody>
